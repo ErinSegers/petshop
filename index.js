@@ -16,6 +16,7 @@ var animalSchema = mongoose.Schema({
 });
 //create the mongoose model - capitalized because it's a special case
 var Animal = mongoose.model('Animal', animalSchema);
+
 //testing database stuff
 // var donkey = new Animal({
 //   color: 'gray',
@@ -30,8 +31,26 @@ var Animal = mongoose.model('Animal', animalSchema);
 //     console.log(data);
 //   }
 // });
+
 // GET /animals
+server.get('/animals', function(req, res){
+  Animal.find({}, function(err, documents){
+    if(err){
+      res.status(500).json({
+        msg: err  //do not actually send full error back in production, not secure
+      });
+    } else {
+      res.status(200).json({
+        animals: documents
+      });
+    }
+  });
+});
+
 //GET /animals/:id
+server.get('/animals/:id', function(req, res){
+
+});
 //POST /animals
 //PUT /animals/:id
 //DELET /animals/:id
