@@ -1,9 +1,14 @@
 var express = require('express');
 var server = express();
 var mongoose = require('mongoose');
+var bodyParser = require('body-parser');
 
 var port = process.env.PORT || 8080;
 var mongoURI = process.env.MONGOURI || require('./secrets').mongoURI;
+
+//powerup -- middleware
+server.use(bodyParser.json()); //handle json data as part of the body
+server.use(bodyParser.urlencoded({extended: true}));
 
 //connect to the database
 mongoose.connect(mongoURI);
@@ -61,7 +66,22 @@ server.get('/animals/:id', function(req, res){
     }
   });
 });
+
 //POST /animals
+server.post('/animals', function (req, res){
+  var animal = new Animal(req.body);
+  animal.save(function(err, document){
+    if(err){
+      res.status(500).json({
+        msg: err
+      });
+    } else [
+      res.status(201).json({
+        msg: 'Success'
+      })
+    ]
+  });
+});
 //PUT /animals/:id
 //DELET /animals/:id
 
