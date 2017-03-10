@@ -49,7 +49,17 @@ server.get('/animals', function(req, res){
 
 //GET /animals/:id
 server.get('/animals/:id', function(req, res){
-
+  Animal.find({_id: req.params.id}, function(err, documents){
+    if(err){
+      res.status(500).json({
+        msg: err
+        });
+    } else {
+      res.status(200).json({
+        animals: documents
+      });
+    }
+  });
 });
 //POST /animals
 //PUT /animals/:id
