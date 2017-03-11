@@ -82,8 +82,25 @@ server.post('/animals', function (req, res){
     ]
   });
 });
+
 //PUT /animals/:id
-//DELET /animals/:id
+
+
+//DELETE /animals/:id
+server.delete('/animals/:id', function(req, res){
+  Animal.remove({_id: req.params.id}, function(err, document){
+    if(err){
+      res.status(500).json({
+        msg: err
+      });
+    } else {
+      res.status(200).json({
+        msg: 'Successfully delete'
+      });
+    }
+  });
+});
+
 
 server.listen(port, function(){
   console.log('now listening on port...', port);
